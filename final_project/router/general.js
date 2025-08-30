@@ -5,21 +5,19 @@ let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
 public_users.post("/register", (req,res) => {
-    const { username, password } = req.body;
+    const username = req.body.username;
+    const password = req.body.password;
 
-    // Validate input
-    if (!username || !password) {
-        return res.status(400).json({ message: "Username and password are required" });
+    if (!username || !password ) {
+        return res.status(400).json({message: "Username and password are required"});
     }
 
-    // Check if username already exists
     if (isValid(username)) {
-        return res.status(409).json({ message: "Username already exists" });
+        return res.status(409)>express.json({message: "Username already exists"})
     }
 
-    // Add new user
-    users.push({ username, password });
-
+    users.push({"username":username,"password":password});
+    
     return res.status(201).json({ message: "User registered successfully" });
 });
 
